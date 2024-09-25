@@ -1,61 +1,103 @@
 import express from "express"
-import bodyParser from "body-parser";
 import cors from 'cors'
 import fs from 'fs'
+import bodyParser from "body-parser";
 
 const port =1234;
 const app=express()
 
 app.use(bodyParser.json())
 app.use(cors())
-app.get("/",(request,response)=>{
+//get response
+app.get("/",(req,res)=>{
   response.json(
     {
       greeting:"Hello Iam get"
     }
   )
 })
-app.post("/sign-up",(request,response)=>{
-  const {name,email,password}=request.body
-  fs.readFile("./back-end/lib/data.json","utf-8",(readError,data)=>{
+//post response
+app.post("/sign-up",(req,res)=>{
+  console.log('req body is:',req.body)
+  if (!req.body) {
+    console.log('body is empty')
+    res.json({ error: 'Missing request body' });
+}
+  fs.readFile("./lib/data.json","utf-8",(readError,data)=>{
+    if(readError)
+      {
+        res.json({
+          success:false,
+          error:'in reading file'
+        })
+      }
+    const {name,email,password}=req.body
+    let savedData=data ? JSON.parse(data) : []
+    const newUser={
+      id:Date.now().toString(),
+      name:name,
+      email:email,
+      password:password
+    }
+    savedData.push(newUser)
+    fs.writeFile("./lib/data.json",JSON.stringify(savedData),(error)=>{
+  if(error)
+  {
+    res.json(
+      {
+        success:false,
+        error:'in writing file'
+      }
+    )
+  }
+  else
+  {
+    res.json({
+      success:true,
+      user:newUser
+    })
+  }
+    })
+    })
+})
+
+
+app.post("/sign-in",(req,res)=>{
+fs.readFile("./lib/data.json","utf-8",(readError,data)=>{
   if(readError)
   {
-    response.json({
+    res.json(
+      {
+        success:false
+      }
+    )
+  }
+  const {email,password}=req.body
+  let savedData=data ? JSON.parse(data) :[]
+  if(!savedData)
+  {
+    res.json(
+      {
+        success:false
+      }
+    )
+  }
+  const foundUser=savedData.find(data=>data.email===email && data.password===password)
+  if(foundUser)
+  {
+    res.json({
+      success:true
+    })
+
+  }
+  else
+  {
+    res.json({
       success:false
     })
   }
-  let savedData=data ? JSON.parse(data) : []
-  const newUser={
-    id:Date.now().toString(),
-    name:name,
-    email:email,
-    password:password
-  }
-  savedData.push(newUser)
-  fs.writeFile("./back-end/lib/data.json",JSON.stringify(savedData),(error)=>{
-if(error)
-{
-  response.json(
-    {
-      success:false
-    }
-  )
-}
-else
-{
-  response.json({
-    success:true,
-    user:newUser
-  })
-}
-  })
-  })
 })
-
-
-app.post("/sign-in",(request,response)=>{
-
 })
 app.listen(port,()=>{
-  console.log(`Server is started working http:localhost:${port}`)
+  console.log(`Server is started working http://localhost:${port}`)
 })

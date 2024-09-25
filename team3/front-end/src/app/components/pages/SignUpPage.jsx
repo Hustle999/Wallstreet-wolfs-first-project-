@@ -1,7 +1,7 @@
 import { GeldIcon } from "../Icons/Geld";
 import Link from "next/link";
 
-export const SignUp = () => {
+export const SignUpPage = () => {
   return (
     <div className="w-full flex items-center">
       <div className="w-[50%]  flex justify-center items-center">
@@ -30,10 +30,10 @@ export const SignUp = () => {
             Log In
           </button>
           <div className="flex gap-4">
-            <h1>Don’t have account?</h1>
-            <a className="text-blue-600" href="">
-              Sign up
-            </a>
+            <h1>Already have account?</h1>
+            <Link className="text-blue-600" href={"/"}>
+              Log In
+            </Link>
           </div>
         </div>
       </div>

@@ -1,11 +1,9 @@
-import { LoginPage } from "./pages/LoginPage";
-import { SignUpPage } from "./pages/SignUpPage";
+import { LoginPage } from "./components/pages/LoginPage";
 
 export default function Home() {
   return (
     <div>
       <LoginPage />
-      <SignUpPage />
     </div>
   );
 }

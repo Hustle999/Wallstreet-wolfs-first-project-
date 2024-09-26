@@ -2,7 +2,7 @@
 import { GeldIcon } from "../Icons/Geld";
 import Link from "next/link";
 export const LoginPage = () => {
-  const url="http://localhost:1234/sign-in"
+  const url="https://team-three.onrender.com/sign-in"
   const onSubmit= async(e)=>{
     e.preventDefault()
 const user={

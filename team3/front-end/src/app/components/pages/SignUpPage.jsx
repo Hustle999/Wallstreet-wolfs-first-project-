@@ -3,7 +3,7 @@ import { GeldIcon } from "../Icons/Geld";
 import Link from "next/link";
 const passwordRegex=/[\w]{8,}/i
 export const SignUpPage = () => {
- const url="http://localhost:1234/sign-up"
+ const url="https://team-three.onrender.com/sign-up"
  const onSubmit=async (e)=>{
   e.preventDefault()
   const password=e.target.password.value
